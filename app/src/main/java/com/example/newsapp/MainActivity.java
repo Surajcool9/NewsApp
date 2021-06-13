@@ -4,26 +4,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
+import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
-
 import com.example.newsapp.Utility.UtilityKs;
-import com.example.newsapp.adapter.NewsPagingAdapter;
+import com.example.newsapp.adapter.NewsListAdapter;
 import com.example.newsapp.databinding.ActivityPagingNewsBinding;
 import com.example.newsapp.model.Articles;
 import com.example.newsapp.model.NewsModel;
-import com.example.newsapp.viewmodel.NewsPagedListViewModel;
+import com.example.newsapp.viewmodel.NewsViewModel;
 
-public class MainActivity extends AppCompatActivity implements NewsPagingAdapter.OnPagingCardClick {
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity implements NewsListAdapter.OnPagingCardClick {
 
     private ActivityPagingNewsBinding binding;
-    private NewsPagedListViewModel newsPagedListViewModel;
-    private NewsPagingAdapter adapter;
+    private NewsViewModel newsViewModel;
+    private NewsListAdapter adapter;
+    private ArrayList<Articles> newsArticles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,57 +30,27 @@ public class MainActivity extends AppCompatActivity implements NewsPagingAdapter
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_paging_news);
 
-        newsPagedListViewModel = new ViewModelProvider(this).get(NewsPagedListViewModel.class);
+        newsViewModel = new ViewModelProvider(this).get(NewsViewModel.class);
         UtilityKs.startShimmer(binding.shimmerView);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        binding.pagingNewsShow.setLayoutManager(layoutManager);
-        binding.pagingNewsShow.setItemAnimator(null);
-
-        adapter = new NewsPagingAdapter(this,this);
-
-        newsPagedListViewModel.pagedListLiveData.observe(this, new Observer<PagedList<Articles>>() {
-            @Override
-            public void onChanged(PagedList<Articles> articles) {
-                adapter.submitList(articles);
-            }
-        });
-
-        binding.pagingNewsShow.setAdapter(adapter);
-
-        toggle();
+      newsViewModel.getNewsList().observe(this, new Observer<NewsModel>() {
+          @Override
+          public void onChanged(NewsModel newsModel) {
+              newsArticles = newsModel.getArticles();
+              UtilityKs.stopShimmer(binding.shimmerView);
+              setAdapterNews(newsArticles);
+          }
+      });
+        newsViewModel.makeApiCall();
 
     }
-    private void toggle() {
-        newsPagedListViewModel.onItemAtEndLoaded.observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                UtilityKs.stopShimmer(binding.shimmerView);
-                binding.pagingNewsShow.setVisibility(View.VISIBLE);
-                binding.noNews.setVisibility(View.GONE);
-            }
-        });
 
-        newsPagedListViewModel.onZeroItemsLoaded.observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                UtilityKs.stopShimmer(binding.shimmerView);
-                binding.pagingNewsShow.setVisibility(View.GONE);
-                binding.noNews.setVisibility(View.VISIBLE);
-            }
-        });
-
-        newsPagedListViewModel.onItemAtFrontLoaded.observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                UtilityKs.stopShimmer(binding.shimmerView);
-                binding.pagingNewsShow.setVisibility(View.VISIBLE);
-                binding.noNews.setVisibility(View.GONE);
-            }
-        });
+    private void setAdapterNews(ArrayList<Articles> articles) {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL,false);
+        binding.newsShow.setLayoutManager(layoutManager);
+        adapter = new NewsListAdapter(this, articles,this);
+        binding.newsShow.setAdapter(adapter);
+        adapter.setNewsList(articles);
     }
-
-
 
     @Override
     protected void onPause() {
