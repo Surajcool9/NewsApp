@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.newsapp.Network.ApiInterface;
@@ -12,6 +13,10 @@ import com.example.newsapp.Network.RetrofitInstance;
 import com.example.newsapp.Utility.StringKs;
 import com.example.newsapp.model.Articles;
 import com.example.newsapp.model.NewsModel;
+import com.example.newsapp.respository.NewsRepository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,13 +24,17 @@ import retrofit2.Response;
 
 public class NewsViewModel extends AndroidViewModel {
 
-    private MutableLiveData<NewsModel> newsModel = new MutableLiveData<>();
+    private NewsRepository newsRepository;
+    private LiveData<List<Articles>> getAllNews;
 
     public NewsViewModel(@NonNull Application application) {
         super(application);
+        newsRepository = new NewsRepository(application);
+        getAllNews = newsRepository.getAllNewsArticles();
     }
-    public MutableLiveData<NewsModel> getNewsList() {
-        return newsModel;
+
+    public LiveData<List<Articles>> getNewsList() {
+        return getAllNews;
     }
 
     public void makeApiCall() {
@@ -35,12 +44,13 @@ public class NewsViewModel extends AndroidViewModel {
         call.enqueue(new Callback<NewsModel>() {
             @Override
             public void onResponse(Call<NewsModel> call, Response<NewsModel> response) {
-                newsModel.postValue(response.body());
+                if(response.isSuccessful()) {
+                    newsRepository.insert(response.body().getArticles());
+                }
             }
 
             @Override
             public void onFailure(Call<NewsModel> call, Throwable t) {
-                newsModel.postValue(null);
                 Log.e("Error Msg", t.getMessage());
             }
         });

@@ -10,26 +10,27 @@ import com.example.newsapp.database.NewsDatabase;
 import com.example.newsapp.model.Articles;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NewsRepository {
 
     private NewsDatabase newsDatabase;
-    private LiveData<ArrayList<Articles>> getAllNews;
+    private LiveData<List<Articles>> getAllNews;
 
     public NewsRepository(Application application) {
        newsDatabase = NewsDatabase.getInstance(application);
        getAllNews = newsDatabase.newsDao().getAllNews();
     }
 
-    public void insert(ArrayList<Articles> newsList) {
+    public void insert(List<Articles> newsList) {
         new InsertAsyncTask(newsDatabase).execute(newsList);
     }
 
-    public LiveData<ArrayList<Articles>> getAllNewsArticles() {
+    public LiveData<List<Articles>> getAllNewsArticles() {
         return getAllNews;
     }
 
-    static class InsertAsyncTask extends AsyncTask<ArrayList<Articles>,Void,Void> {
+    static class InsertAsyncTask extends AsyncTask<List<Articles>,Void,Void> {
 
         private NewsDao newsDao;
 
@@ -37,7 +38,7 @@ public class NewsRepository {
             newsDao = newsDatabase.newsDao();
         }
         @Override
-        protected Void doInBackground(ArrayList<Articles>... arrayLists) {
+        protected Void doInBackground(List<Articles>... arrayLists) {
             newsDao.insert(arrayLists[0]);
             return null;
         }

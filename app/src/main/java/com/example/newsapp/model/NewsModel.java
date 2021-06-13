@@ -7,6 +7,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NewsModel implements Parcelable {
 
@@ -18,7 +19,7 @@ public class NewsModel implements Parcelable {
     private Integer totalResults;
     @SerializedName("articles")
     @Expose
-    private ArrayList<Articles> articles = null;
+    private List<Articles> articles = null;
 
     protected NewsModel(Parcel in) {
         status = in.readString();
@@ -57,7 +58,7 @@ public class NewsModel implements Parcelable {
         this.totalResults = totalResults;
     }
 
-    public ArrayList<Articles> getArticles() {
+    public List<Articles> getArticles() {
         return articles;
     }
 

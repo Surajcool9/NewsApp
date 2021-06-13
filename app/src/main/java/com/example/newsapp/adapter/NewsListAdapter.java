@@ -20,14 +20,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsListViewHolder> {
 
     private Context context;
-    private ArrayList<Articles> articles;
+    private List<Articles> articles;
     private OnPagingCardClick onCardClick;
 
-    public NewsListAdapter(Context context, ArrayList<Articles> articles, OnPagingCardClick onCardClick) {
+    public NewsListAdapter(Context context, List<Articles> articles, OnPagingCardClick onCardClick) {
         this.context = context;
         this.articles = articles;
         this.onCardClick = onCardClick;
@@ -101,7 +102,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsLi
         }
     }
 
-    public void setNewsList(ArrayList<Articles> articles) {
+    public void setNewsList(List<Articles> articles) {
         this.articles = articles;
         notifyDataSetChanged();
     }

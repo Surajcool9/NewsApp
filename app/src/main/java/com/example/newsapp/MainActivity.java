@@ -16,13 +16,14 @@ import com.example.newsapp.model.NewsModel;
 import com.example.newsapp.viewmodel.NewsViewModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NewsListAdapter.OnPagingCardClick {
 
     private ActivityPagingNewsBinding binding;
     private NewsViewModel newsViewModel;
     private NewsListAdapter adapter;
-    private ArrayList<Articles> newsArticles;
+    private List<Articles> newsArticles = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,19 +33,19 @@ public class MainActivity extends AppCompatActivity implements NewsListAdapter.O
 
         newsViewModel = new ViewModelProvider(this).get(NewsViewModel.class);
         UtilityKs.startShimmer(binding.shimmerView);
-      newsViewModel.getNewsList().observe(this, new Observer<NewsModel>() {
-          @Override
-          public void onChanged(NewsModel newsModel) {
-              newsArticles = newsModel.getArticles();
-              UtilityKs.stopShimmer(binding.shimmerView);
-              setAdapterNews(newsArticles);
-          }
-      });
+        newsViewModel.getNewsList().observe(this, new Observer<List<Articles>>() {
+            @Override
+            public void onChanged(List<Articles> articles) {
+                newsArticles  = articles;
+                UtilityKs.stopShimmer(binding.shimmerView);
+                setAdapterNews(newsArticles);
+            }
+        });
         newsViewModel.makeApiCall();
 
     }
 
-    private void setAdapterNews(ArrayList<Articles> articles) {
+    private void setAdapterNews(List<Articles> articles) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL,false);
         binding.newsShow.setLayoutManager(layoutManager);
         adapter = new NewsListAdapter(this, articles,this);
