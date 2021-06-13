@@ -6,6 +6,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import com.example.newsapp.Utility.UtilityKs;
@@ -28,7 +30,6 @@ public class MainActivity extends AppCompatActivity implements NewsListAdapter.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_paging_news);
 
         newsViewModel = new ViewModelProvider(this).get(NewsViewModel.class);

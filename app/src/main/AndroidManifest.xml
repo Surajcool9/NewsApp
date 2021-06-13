@@ -11,9 +11,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NewsApp">
-        <activity android:name=".PagingNews">
+        <activity android:name=".PagingNews"
+            android:theme="@style/Theme.NewsApp.NoActionBar">
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:theme="@style/Theme.NewsApp.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
