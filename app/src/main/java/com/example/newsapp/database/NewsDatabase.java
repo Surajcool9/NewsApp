@@ -12,7 +12,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.example.newsapp.dao.NewsDao;
 import com.example.newsapp.model.Articles;
 
-@Database(entities = {Articles.class}, version = 1)
+@Database(entities = {Articles.class}, version = 2)
 public abstract class NewsDatabase extends RoomDatabase {
 
     private static final String DATABASE_NAME = "ArticleDatabase";
@@ -28,6 +28,7 @@ public abstract class NewsDatabase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context, NewsDatabase.class,
                             DATABASE_NAME)
                             .addCallback(callback)
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }
