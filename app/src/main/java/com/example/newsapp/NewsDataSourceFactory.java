@@ -6,19 +6,20 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.paging.DataSource;
 
 import com.example.newsapp.Network.ApiInterface;
+import com.example.newsapp.model.Articles;
 import com.example.newsapp.model.NewsModel;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-public class NewsDataSourceFactory extends DataSource.Factory<Integer, NewsModel.Article> {
+public class NewsDataSourceFactory extends DataSource.Factory<Integer, Articles> {
 
     private ApiInterface apiInterface;
     private Application application;
     private NewsDataSource newsDataSource;
     private NewsModel newsModel;
-    private ArrayList<NewsModel.Article> newsArticles;
+    private ArrayList<Articles> newsArticles;
     private MutableLiveData<NewsDataSource>  newsDataSourceMutableLiveData;
 
     public NewsDataSourceFactory(ApiInterface apiInterface, Application application) {
@@ -33,7 +34,7 @@ public class NewsDataSourceFactory extends DataSource.Factory<Integer, NewsModel
 
     @NotNull
     @Override
-    public DataSource<Integer, NewsModel.Article> create() {
+    public DataSource<Integer, Articles> create() {
         newsDataSource = new NewsDataSource(apiInterface,application);
         newsDataSourceMutableLiveData.postValue(newsDataSource);
         return newsDataSource;

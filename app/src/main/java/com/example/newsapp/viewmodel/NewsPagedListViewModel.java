@@ -14,6 +14,7 @@ import com.example.newsapp.Network.ApiInterface;
 import com.example.newsapp.Network.RetrofitInstance;
 import com.example.newsapp.NewsDataSource;
 import com.example.newsapp.NewsDataSourceFactory;
+import com.example.newsapp.model.Articles;
 import com.example.newsapp.model.NewsModel;
 
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 public class NewsPagedListViewModel extends AndroidViewModel {
 
     LiveData<NewsDataSource> newsDataSourceLiveData;
-    public LiveData<PagedList<NewsModel.Article>> pagedListLiveData;
+    public LiveData<PagedList<Articles>> pagedListLiveData;
     public MutableLiveData<Boolean> onZeroItemsLoaded = new MutableLiveData<>();
     public MutableLiveData<Boolean> onItemAtEndLoaded = new MutableLiveData<>();
     public MutableLiveData<Boolean> onItemAtFrontLoaded = new MutableLiveData<>();
@@ -39,15 +40,15 @@ public class NewsPagedListViewModel extends AndroidViewModel {
                 .setPageSize(20)
                 .build();
 
-        pagedListLiveData = new LivePagedListBuilder<Integer,NewsModel.Article>(factory,config).setBoundaryCallback(new PagedList.BoundaryCallback<NewsModel.Article>() {
+        pagedListLiveData = new LivePagedListBuilder<Integer,Articles>(factory,config).setBoundaryCallback(new PagedList.BoundaryCallback<Articles>() {
             @Override
-            public void onItemAtEndLoaded(@NotNull NewsModel.Article itemAtEnd) {
+            public void onItemAtEndLoaded(@NotNull Articles itemAtEnd) {
                 super.onItemAtEndLoaded(itemAtEnd);
                 onItemAtEndLoaded.setValue(true);
             }
 
             @Override
-            public void onItemAtFrontLoaded(@NotNull NewsModel.Article itemAtFront) {
+            public void onItemAtFrontLoaded(@NotNull Articles itemAtFront) {
                 super.onItemAtFrontLoaded(itemAtFront);
                 onItemAtFrontLoaded.setValue(true);
             }

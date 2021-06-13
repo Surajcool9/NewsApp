@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.newsapp.R;
 import com.example.newsapp.databinding.NewsListviewBinding;
+import com.example.newsapp.model.Articles;
 import com.example.newsapp.model.NewsModel;
 
 import org.jetbrains.annotations.NotNull;
@@ -28,7 +29,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
-public class NewsPagingAdapter extends PagedListAdapter<NewsModel.Article, NewsPagingAdapter.NewsPagingViewHolder > {
+public class NewsPagingAdapter extends PagedListAdapter<Articles, NewsPagingAdapter.NewsPagingViewHolder > {
     private Context context;
     private OnPagingCardClick onPagingCardClick;
     private SimpleDateFormat dateFormat;
@@ -39,15 +40,15 @@ public class NewsPagingAdapter extends PagedListAdapter<NewsModel.Article, NewsP
         this.onPagingCardClick = onPagingCardClick;
     }
 
-    private static final DiffUtil.ItemCallback<NewsModel.Article> POST_COMPARATOR = new DiffUtil.ItemCallback<NewsModel.Article>() {
+    private static final DiffUtil.ItemCallback<Articles> POST_COMPARATOR = new DiffUtil.ItemCallback<Articles>() {
        @Override
-       public boolean areItemsTheSame(@NonNull NewsModel.Article oldItem, @NonNull NewsModel.Article newItem) {
+       public boolean areItemsTheSame(@NonNull Articles oldItem, @NonNull Articles newItem) {
            return oldItem.getTitle() == newItem.getTitle();
        }
 
        @SuppressLint("DiffUtilEquals")
        @Override
-       public boolean areContentsTheSame(@NonNull NewsModel.Article oldItem, @NonNull NewsModel.Article newItem) {
+       public boolean areContentsTheSame(@NonNull Articles oldItem, @NonNull Articles newItem) {
            return oldItem.equals(newItem);
        }
    };
@@ -71,7 +72,7 @@ public class NewsPagingAdapter extends PagedListAdapter<NewsModel.Article, NewsP
             this.binding = binding;
         }
 
-        private void bind(NewsModel.Article article) {
+        private void bind(Articles article) {
             if(!TextUtils.isEmpty(article.getTitle())) {
                 binding.headline.setText(article.getTitle());
             } else {

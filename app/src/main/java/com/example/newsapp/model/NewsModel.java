@@ -18,7 +18,7 @@ public class NewsModel implements Parcelable {
     private Integer totalResults;
     @SerializedName("articles")
     @Expose
-    private ArrayList<Article> articles = null;
+    private ArrayList<Articles> articles = null;
 
     protected NewsModel(Parcel in) {
         status = in.readString();
@@ -57,11 +57,11 @@ public class NewsModel implements Parcelable {
         this.totalResults = totalResults;
     }
 
-    public ArrayList<Article> getArticles() {
+    public ArrayList<Articles> getArticles() {
         return articles;
     }
 
-    public void setArticles(ArrayList<Article> articles) {
+    public void setArticles(ArrayList<Articles> articles) {
         this.articles = articles;
     }
 
@@ -81,7 +81,7 @@ public class NewsModel implements Parcelable {
         }
     }
 
-    public static class Article implements Parcelable{
+    /*public static class Article implements Parcelable{
 
         @SerializedName("author")
         @Expose
@@ -198,6 +198,6 @@ public class NewsModel implements Parcelable {
             parcel.writeString(publishedAt);
             parcel.writeString(content);
         }
-    }
+    }*/
 
 }

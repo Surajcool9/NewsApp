@@ -9,6 +9,7 @@ import androidx.paging.PageKeyedDataSource;
 import com.example.newsapp.Network.ApiInterface;
 import com.example.newsapp.Network.RetrofitInstance;
 import com.example.newsapp.Utility.StringKs;
+import com.example.newsapp.model.Articles;
 import com.example.newsapp.model.NewsModel;
 
 import org.jetbrains.annotations.NotNull;
@@ -19,11 +20,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NewsDataSource extends PageKeyedDataSource<Integer, NewsModel.Article> {
+public class NewsDataSource extends PageKeyedDataSource<Integer, Articles> {
 
     private ApiInterface apiInterface;
     private Application application;
-    private ArrayList<NewsModel.Article> newsArticles;
+    private ArrayList<Articles> newsArticles;
 
     public NewsDataSource(ApiInterface apiInterface, Application application) {
         this.apiInterface = apiInterface;
@@ -31,7 +32,7 @@ public class NewsDataSource extends PageKeyedDataSource<Integer, NewsModel.Artic
     }
 
     @Override
-    public void loadAfter(@NotNull LoadParams<Integer> loadParams, @NotNull final LoadCallback<Integer, NewsModel.Article> loadCallback) {
+    public void loadAfter(@NotNull LoadParams<Integer> loadParams, @NotNull final LoadCallback<Integer, Articles> loadCallback) {
 
         ApiInterface apiInterface = RetrofitInstance.getRetrofitClient().create(ApiInterface.class);
         Call<NewsModel> call = apiInterface.getsNewsListPaging(StringKs.INDIA_CODE, StringKs.API_KEY, loadParams.key);
@@ -59,12 +60,12 @@ public class NewsDataSource extends PageKeyedDataSource<Integer, NewsModel.Artic
     }
 
     @Override
-    public void loadBefore(@NotNull LoadParams<Integer> loadParams, @NotNull LoadCallback<Integer, NewsModel.Article> loadCallback) {
+    public void loadBefore(@NotNull LoadParams<Integer> loadParams, @NotNull LoadCallback<Integer, Articles> loadCallback) {
 
     }
 
     @Override
-    public void loadInitial(@NotNull LoadInitialParams<Integer> loadInitialParams, @NotNull LoadInitialCallback<Integer, NewsModel.Article> loadInitialCallback) {
+    public void loadInitial(@NotNull LoadInitialParams<Integer> loadInitialParams, @NotNull LoadInitialCallback<Integer, Articles> loadInitialCallback) {
 
         ApiInterface apiInterface = RetrofitInstance.getRetrofitClient().create(ApiInterface.class);
         Call<NewsModel> call = apiInterface.getsNewsListPaging(StringKs.INDIA_CODE, StringKs.API_KEY, 1);

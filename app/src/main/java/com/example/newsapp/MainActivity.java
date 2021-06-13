@@ -15,6 +15,7 @@ import android.view.View;
 import com.example.newsapp.Utility.UtilityKs;
 import com.example.newsapp.adapter.NewsPagingAdapter;
 import com.example.newsapp.databinding.ActivityPagingNewsBinding;
+import com.example.newsapp.model.Articles;
 import com.example.newsapp.model.NewsModel;
 import com.example.newsapp.viewmodel.NewsPagedListViewModel;
 
@@ -39,9 +40,9 @@ public class MainActivity extends AppCompatActivity implements NewsPagingAdapter
 
         adapter = new NewsPagingAdapter(this,this);
 
-        newsPagedListViewModel.pagedListLiveData.observe(this, new Observer<PagedList<NewsModel.Article>>() {
+        newsPagedListViewModel.pagedListLiveData.observe(this, new Observer<PagedList<Articles>>() {
             @Override
-            public void onChanged(PagedList<NewsModel.Article> articles) {
+            public void onChanged(PagedList<Articles> articles) {
                 adapter.submitList(articles);
             }
         });
